@@ -12,8 +12,10 @@
 
 ;; Highlighting
 (defconst michelson-font-lock
-  (list
-   '("\\b\[A-Z\]+\\b" . font-lock-builtin-face))
+  `(("\\b\[A-Z\]+\\b" . font-lock-builtin-face)
+	(,(regexp-opt '("string" "bool" "unit" "list" "pair" "option" "or" "set" "map") 'words)
+	 . font-lock-type-face)
+	("u?int\\(8\\|16\\|32\\|64\\)" . font-lock-type-face))
   "Minimal highlighting expressions for Michelson mode.")
 (setq font-lock-defaults t)
 
