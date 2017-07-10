@@ -86,12 +86,22 @@
 	"H"
 	"STEPS_TO_QUOTA"
 	"SOURCE"
-	"CADR"
-	"CADDR"))
+	;; Not specified in BNF
+	"UNIT"))
+
+(defconst michelson-command-regexp-list
+  "C[AD]\+R\\|CMP\\(EQ\\|NEQ\\|LT\\|GT\\|LE\\|GE\\)\\|DI+P\\|DUU\+P"
+  "A more complicated command regexps for which `regexp-opt` does not work.")
+
+(defconst michelson-constant-regexp
+  "True\\|False\\|\[0-9\]\+"
+  "Matches constants in michelson.")
 
 ;; Highlighting
 (defconst michelson-font-lock
-  `((,(regexp-opt michelson-command-list 'words) . font-lock-builtin-face)
+  `(("#.\*" . font-lock-comment-face)
+	(,(regexp-opt michelson-command-list 'words) . font-lock-builtin-face)
+	(,michelson-command-regexp-list . font-lock-builtin-face)
 	(,(regexp-opt
 	   '("string" "bool" "unit" "list" "pair" "option" "or" "set" "map")
 	   'words)
@@ -99,7 +109,7 @@
 	("u?int\\(8\\|16\\|32\\|64\\)" . font-lock-type-face)
 	(,(regexp-opt '("parameter" "return" "storage" "code") 'words)
 	 . font-lock-keyword-face)
-	("#.\*" . font-lock-comment-face))
+	(,michelson-constant-regexp . font-lock-constant-face))
   "Minimal highlighting expressions for Michelson mode.")
 (setq font-lock-defaults t)
 
